@@ -1,0 +1,381 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Apple CSS Variables ────────────────────────────────────────── */
+:root {
+  /* ── Brand ──────────────────────────────────────────────────────── */
+  --color-coral-flame:    #0066cc;   /* Action Blue */
+  --gradient-coral-flame: linear-gradient(135deg, #0071e3 0%, #0066cc 100%);
+  --color-brandwood:      #1d1d1f;   /* Near-black Ink */
+  --color-sunset-fade:    #f5f5f7;   /* Canvas Parchment */
+  --color-blush-mist:     #fafafc;   /* Pearl Button background */
+  --color-pure-white:     #ffffff;
+  --color-carbon:         #000000;
+
+  /* ── Functional action accents ───────────────────────────────────── */
+  --color-mint-action:    #34c771;   /* Emerald Green */
+  --color-cobalt-pulse:   #477ee9;   /* Cobalt Blue */
+  --color-magenta-spark:  #fb2d54;   /* Crimson Pink/Expense */
+
+  /* ── Surfaces ────────────────────────────────────────────────────── */
+  --surface:              #ffffff;
+  --surface-subtle:       #f5f5f7;   /* Canvas Parchment */
+  --surface-muted:        #fafafc;   /* Pearl Button background */
+
+  /* ── Text ────────────────────────────────────────────────────────── */
+  --text-primary:         #1d1d1f;   /* Apple Ink */
+  --text-secondary:       #333333;   /* Soft Ink */
+  --text-muted:           #7a7a7a;   /* Muted Ink */
+
+  /* ── Semantic amounts ────────────────────────────────────────────── */
+  --income:               #34c771;
+  --expense:              #fb2d54;
+  --warning:              #f59e0b;
+
+  /* ── Borders ─────────────────────────────────────────────────────── */
+  --border:               #e0e0e0;   /* Hairline Border */
+  --border-subtle:        #f0f0f0;   /* Divider Soft */
+
+  /* ── Shadows ─────────────────────────────────────────────────────── */
+  --shadow-card:    none;            /* Apple flat design style - no shadows on UI chrome */
+  --shadow-coral:   none;
+  --shadow-pill:    none;
+  --shadow-modal:   0 20px 60px 0 rgba(29, 29, 31, 0.12);
+  --shadow-fab:     rgba(0, 102, 204, 0.20) 0px 4px 16px 0px;
+
+  /* ── Spacing (Apple design system) ────────────────────────────── */
+  --space-xxs:      4px;
+  --space-xs:       8px;
+  --space-sm:       12px;
+  --space-md:       17px;
+  --space-lg:       24px;
+  --space-xl:       32px;
+  --space-xxl:      48px;
+  --space-section:  80px;
+
+  /* ── Radius (Apple design system) ─────────────────────────────── */
+  --radius-xs:      5px;
+  --radius-sm:      8px;
+  --radius-md:      11px;
+  --radius-lg:      18px;
+  --radius-pill:    9999px;
+
+  /* ── Layout ──────────────────────────────────────────────────────── */
+  --nav-h:          44px;            /* Apple global-nav height */
+  --sidebar-w:      240px;           /* Pinned sidebar width */
+  --page-max-width: 980px;           /* Content width limit */
+  --section-gap:    80px;
+  --card-padding:   24px;
+}
+
+/* Dark mode — canvas flips to near-black tile system */
+.dark {
+  --surface:        #1d1d1f;         /* Near-Black Ink */
+  --surface-subtle: #272729;         /* Near-Black Tile 1 */
+  --surface-muted:  #2a2a2c;         /* Near-Black Tile 2 */
+
+  --text-primary:   #ffffff;         /* White Text */
+  --text-secondary: #cccccc;         /* Muted White */
+  --text-muted:     #7a7a7a;
+
+  --border:         #333333;         /* Dark Hairline */
+  --border-subtle:  #252527;         /* Near-Black Tile 3 */
+
+  --shadow-modal:   0 20px 60px 0 rgba(0, 0, 0, 0.4);
+  --shadow-fab:     rgba(0, 102, 204, 0.35) 0px 4px 20px 0px;
+}
+
+/* ─── Base Resets ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 18px; /* Boost root font-size from 16px to 18px on desktop to scale all typography up */
+  }
+}
+
+body {
+  font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  letter-spacing: -0.01em;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-coral-flame); }
+
+/* ─── Selection ─────────────────────────────────────────────────── */
+::selection { background: var(--border-subtle); color: var(--text-primary); }
+
+/* ─── Component Utilities ───────────────────────────────────────── */
+@layer components {
+
+  /* ── Card ──────────────────────────────────────────────────────── */
+  .card {
+    @apply p-6;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+  }
+  .dark .card {
+    background-color: var(--surface-subtle);
+    border-color: var(--border);
+  }
+
+  /* Warm tint card variant */
+  .card-warm {
+    @apply p-6;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  /* ── Page wrapper ───────────────────────────────────────────────── */
+  .page-content {
+    @apply pb-24 lg:pb-8;
+  }
+
+  /* ── Safe area ─────────────────────────────────────────────────── */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ── Amount colors — use functional accent hues ──────────────────── */
+  .amount-income  { color: var(--color-mint-action); font-weight: 600; }
+  .amount-expense { color: var(--color-magenta-spark); font-weight: 600; }
+
+  /* ── Pastel category chip ──────────────────────────────────────── */
+  .cat-chip {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-xl text-lg flex-shrink-0;
+  }
+
+  /* ── Transitions ───────────────────────────────────────────────── */
+  .transition-card {
+    @apply transition-all duration-200 ease-out;
+  }
+  .hover-lift {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ── Input ─────────────────────────────────────────────────────── */
+  .input-base {
+    @apply w-full px-4 py-3 text-sm outline-none transition-all duration-150;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+  .input-base::placeholder {
+    color: var(--text-muted);
+  }
+  .input-base:focus {
+    border-color: var(--color-coral-flame);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
+  }
+  .dark .input-base {
+    background: var(--surface-subtle);
+    border-color: var(--border);
+    color: var(--text-primary);
+  }
+  .dark .input-base::placeholder {
+    color: var(--text-muted);
+  }
+  .dark .input-base:focus {
+    border-color: var(--color-coral-flame);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.25);
+  }
+
+  /* ── Buttons & Active Touch Interactions ────────────────────────── */
+  button, .btn-primary, .btn-secondary, .btn-ghost, .btn-danger, #add-transaction-fab {
+    transition: transform 0.1s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  button:active, .btn-primary:active, .btn-secondary:active, .btn-ghost:active, .btn-danger:active, #add-transaction-fab:active {
+    transform: scale(0.96) !important;
+  }
+
+  /* Primary — solid Action Blue capsule */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed;
+    background: var(--color-coral-flame);
+    color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    letter-spacing: -0.01em;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #0055b3;
+  }
+  .dark .btn-primary {
+    background: var(--color-coral-flame);
+    color: #ffffff;
+  }
+  .dark .btn-primary:hover:not(:disabled) {
+    background: #0071e3;
+  }
+
+  /* Secondary — outlined Action Blue capsule */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed;
+    background: transparent;
+    color: var(--color-coral-flame);
+    border: 1px solid var(--color-coral-flame);
+    border-radius: var(--radius-pill);
+    letter-spacing: -0.01em;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: rgba(0, 102, 204, 0.04);
+  }
+  .dark .btn-secondary {
+    background: transparent;
+    color: var(--color-coral-flame);
+    border-color: var(--color-coral-flame);
+  }
+  .dark .btn-secondary:hover:not(:disabled) {
+    background: rgba(0, 102, 204, 0.08);
+  }
+
+  /* Ghost — text only, minimal */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2
+           font-medium text-sm;
+    color: var(--text-secondary);
+    border-radius: var(--radius-pill);
+  }
+  .btn-ghost:hover {
+    background: var(--surface-subtle);
+    color: var(--color-coral-flame);
+  }
+  .dark .btn-ghost {
+    color: var(--text-secondary);
+  }
+  .dark .btn-ghost:hover {
+    background: var(--surface-subtle);
+    color: var(--color-coral-flame);
+  }
+
+  /* Danger — solid crimson pink capsule */
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           font-semibold text-sm;
+    background: var(--color-magenta-spark);
+    color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+  }
+  .btn-danger:hover {
+    background: #d42042;
+  }
+
+  /* ── Badge / pill ──────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  .badge-income  { background: rgba(52, 199, 113, 0.12); color: #1a8f52; }
+  .badge-expense { background: rgba(251, 45, 84, 0.10);  color: #c01c3e; }
+  .badge-warning { @apply badge bg-amber-100 text-amber-800; }
+  .badge-neutral { background: var(--surface-subtle); color: var(--text-primary); border: 1px solid var(--border); }
+
+  /* ── Section title ─────────────────────────────────────────────── */
+  .section-title {
+    @apply text-xs font-bold uppercase tracking-widest;
+    color: var(--text-muted);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Divider ───────────────────────────────────────────────────── */
+  .divider {
+    border-top: 1px solid #fae0da;
+  }
+
+  /* ── Action tile (color-coded verb icon, Jeton pattern) ─────────── */
+  .action-tile-mint    { background: #34c771; border-radius: 12px; }
+  .action-tile-cobalt  { background: #477ee9; border-radius: 12px; }
+  .action-tile-magenta { background: #fb2d54; border-radius: 12px; }
+}
+
+/* ─── Animations ────────────────────────────────────────────────── */
+@layer utilities {
+  .animate-fade-in    { animation: fadeIn 0.2s ease-out; }
+  .animate-slide-up   { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  .animate-scale-in   { animation: scaleIn 0.2s ease-out; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+/* ─── Bottom Sheet ──────────────────────────────────────────────── */
+.bottom-sheet-overlay {
+  @apply fixed inset-0 z-40 backdrop-blur-sm;
+  background: rgba(54, 8, 2, 0.35);
+  animation: fadeIn 0.2s ease-out;
+}
+.bottom-sheet-panel {
+  @apply fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl max-h-[90dvh] overflow-y-auto;
+  background: #ffffff;
+  box-shadow: 0 -4px 60px 0 rgba(54, 8, 2, 0.15);
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .bottom-sheet-panel {
+  background: #250d09;
+}
+
+/* Bottom sheet drag handle */
+.sheet-handle {
+  @apply w-10 h-1 rounded-full mx-auto mt-3 mb-2;
+  background: #f3c5bb;
+}
+
+/* ─── Number formatting ─────────────────────────────────────────── */
+.rupee-amount {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Coral gradient hero background ────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(135deg, #f8a4a4 0%, #f73b20 100%);
+}
+
+/* ─── Coral-outlined card (for featured items) ───────────────────── */
+.card-outlined-coral {
+  @apply rounded-2xl p-6;
+  background: #ffffff;
+  border: 1.5px solid #f73b20;
+  box-shadow: rgba(247, 59, 32, 0.08) 0px 4px 16px 0px;
+}
