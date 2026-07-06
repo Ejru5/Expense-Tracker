@@ -7,7 +7,6 @@ import { useCards } from '../../hooks/useCards'
 import { useAppStore } from '../../store/useAppStore'
 import type { TransactionType, TransactionTemplate } from '../../types'
 import { TransactionTemplates } from './TransactionTemplates'
-import { RupeeKeyboard } from '../ui/RupeeKeyboard'
 
 interface ManualEntryFormProps {
   onSuccess: () => void
@@ -41,14 +40,7 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
   const [date, setDate]         = useState(prefill?.date ?? new Date().toISOString().split('T')[0])
   const [error, setError]       = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const [showKb, setShowKb]     = useState(false)
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 1024 : true)
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   const handleAmountChange = (val: string) => {
     // Only allow numbers, at most one dot, and at most two decimal digits
@@ -156,24 +148,13 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
           label="Amount"
           id="tx-amount"
           type="text"
-          inputMode={isMobile ? 'none' : undefined}
+          inputMode="decimal"
           placeholder="0"
           value={amount}
-          onFocus={() => isMobile && setShowKb(true)}
           onChange={e => handleAmountChange(e.target.value)}
-          readOnly={isMobile}
           leftElement={<span className="font-semibold text-slate-500">₹</span>}
           required
         />
-        {isMobile && showKb && (
-          <div className="mt-2 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-850">
-            <RupeeKeyboard
-              value={amount}
-              onChange={setAmount}
-              onClose={() => setShowKb(false)}
-            />
-          </div>
-        )}
       </div>
 
       {/* Category */}
