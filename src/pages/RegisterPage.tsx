@@ -52,9 +52,7 @@ export function RegisterPage() {
     <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-surface-subtle">
       <div className="w-full max-w-sm animate-slide-up">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-primary-500 flex items-center justify-center shadow-fab mb-4">
-            <span className="text-white font-bold text-3xl">₹</span>
-          </div>
+          <img src="/logo.png" alt="ExpenseTracker Logo" className="w-16 h-16 rounded-2xl shadow-fab object-cover mb-4" />
           <h1 className="text-2xl font-extrabold text-slate-900">Create Account</h1>
           <p className="text-sm text-slate-400 mt-1">Start tracking your household expenses</p>
         </div>
@@ -130,7 +128,7 @@ export function RegisterPage() {
 
         <p className="text-center text-sm text-slate-400 mt-6">
           Already have an account?{' '}
-          <Link to="/login" className="text-primary-600 font-semibold hover:underline">
+          <Link to="/login" className="text-coral-600 font-semibold hover:underline">
             Sign in
           </Link>
         </p>

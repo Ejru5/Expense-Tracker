@@ -24,12 +24,12 @@ export function UpcomingBillsWidget() {
     <div className="card">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Calendar size={16} className="text-primary-500" />
+          <Calendar size={16} className="text-coral" />
           <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm">Upcoming Bills</h4>
         </div>
         <button
           onClick={() => navigate('/recurring')}
-          className="text-xs font-semibold text-primary-600 flex items-center gap-0.5 hover:underline"
+          className="text-xs font-semibold text-coral-600 flex items-center gap-0.5 hover:underline"
           id="view-recurring-bills-btn"
         >
           View All <ArrowRight size={12} />

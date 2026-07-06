@@ -178,7 +178,7 @@ export function SavingsGoalsPage() {
                   type="button"
                   onClick={() => setForm(f => ({ ...f, icon }))}
                   className={`w-9 h-9 text-lg rounded-xl flex items-center justify-center bg-slate-50 hover:bg-slate-100 transition-all ${
-                    form.icon === icon ? 'ring-2 ring-primary-500 scale-105 bg-primary-50' : ''
+                    form.icon === icon ? 'ring-2 ring-coral scale-105 bg-coral-50' : ''
                   }`}
                 >
                   {icon}

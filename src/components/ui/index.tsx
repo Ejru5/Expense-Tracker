@@ -2,16 +2,14 @@ import React from 'react'
 import { Loader2 } from 'lucide-react'
 
 export function Spinner({ size = 24, className = '' }: { size?: number; className?: string }) {
-  return <Loader2 size={size} className={`animate-spin-slow text-primary-500 ${className}`} />
+  return <Loader2 size={size} className={`animate-spin-slow text-coral ${className}`} />
 }
 
 export function PageLoader() {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-surface-subtle">
       <div className="flex flex-col items-center gap-3">
-        <div className="w-12 h-12 rounded-2xl bg-primary-500 flex items-center justify-center shadow-fab animate-pulse-soft">
-          <span className="text-white text-2xl">₹</span>
-        </div>
+        <img src="/logo.png" alt="Loading..." className="w-12 h-12 rounded-2xl shadow-fab object-cover animate-pulse-soft" />
         <p className="text-sm text-slate-400 font-medium">Loading...</p>
       </div>
     </div>

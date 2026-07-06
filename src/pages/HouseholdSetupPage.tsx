@@ -55,9 +55,7 @@ export function HouseholdSetupPage() {
       <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-surface-subtle">
         <div className="w-full max-w-sm animate-slide-up">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-primary-500 flex items-center justify-center shadow-fab mx-auto mb-4">
-              <span className="text-white font-bold text-3xl">₹</span>
-            </div>
+            <img src="/logo.png" alt="ExpenseTracker Logo" className="w-16 h-16 rounded-2xl shadow-fab object-cover mx-auto mb-4" />
             <h1 className="text-2xl font-extrabold text-slate-900">Set Up Your Household</h1>
             <p className="text-sm text-slate-400 mt-2">Create a new shared household or join one with an invite code</p>
           </div>
@@ -69,8 +67,8 @@ export function HouseholdSetupPage() {
               className="flex items-center gap-4 w-full p-5 rounded-2xl bg-white shadow-card border border-slate-100
                          hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 text-left"
             >
-              <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center flex-shrink-0">
-                <Home size={22} className="text-primary-600" />
+              <div className="w-12 h-12 rounded-xl bg-coral-100 flex items-center justify-center flex-shrink-0">
+                <Home size={22} className="text-coral-600" />
               </div>
               <div>
                 <p className="font-bold text-slate-900">Create New Household</p>

@@ -34,14 +34,7 @@ export function Sidebar({ onAddPress }: SidebarProps) {
       {/* Logo */}
       <div className="px-6 mb-8">
         <div className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
-            style={{
-              background: 'var(--gradient-coral-flame)',
-            }}
-          >
-            <span className="text-white font-bold text-lg">₹</span>
-          </div>
+          <img src="/logo.png" alt="ExpenseTracker Logo" className="w-10 h-10 rounded-xl object-cover" />
           <div>
             <p className="font-bold text-sm leading-tight text-slate-900 dark:text-slate-100" style={{ letterSpacing: '-0.01em' }}>ExpenseTracker</p>
             <p className="text-xs text-slate-400">Household Manager</p>

@@ -58,13 +58,19 @@ export function useTransactions(limit?: number) {
 
   async function addTransaction(tx: Omit<Transaction, 'id' | 'createdAt'>) {
     if (!household) return
-    await addDoc(collection(db, `households/${household.id}/transactions`), {
-      ...tx,
-      date: tx.date instanceof Date
-        ? Timestamp.fromDate(tx.date)
-        : Timestamp.fromDate(new Date(tx.date as any)),
-      createdAt: serverTimestamp(),
-    })
+
+    // Firestore rejects `undefined` values — strip them before writing
+    const clean = Object.fromEntries(
+      Object.entries({
+        ...tx,
+        date: tx.date instanceof Date
+          ? Timestamp.fromDate(tx.date)
+          : Timestamp.fromDate(new Date(tx.date as any)),
+        createdAt: serverTimestamp(),
+      }).filter(([, v]) => v !== undefined)
+    )
+
+    await addDoc(collection(db, `households/${household.id}/transactions`), clean)
   }
 
   async function updateTransaction(id: string, data: Partial<Transaction>) {

@@ -47,9 +47,7 @@ export function LoginPage() {
       <div className="w-full max-w-sm animate-slide-up">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-primary-500 flex items-center justify-center shadow-fab mb-4">
-            <span className="text-white font-bold text-3xl">₹</span>
-          </div>
+          <img src="/logo.png" alt="ExpenseTracker Logo" className="w-16 h-16 rounded-2xl shadow-fab object-cover mb-4" />
           <h1 className="text-2xl font-extrabold text-slate-900">ExpenseTracker</h1>
           <p className="text-sm text-slate-400 mt-1">Sign in to your household</p>
         </div>
@@ -117,7 +115,7 @@ export function LoginPage() {
 
         <p className="text-center text-sm text-slate-400 mt-6">
           Don't have an account?{' '}
-          <Link to="/register" className="text-primary-600 font-semibold hover:underline">
+          <Link to="/register" className="text-coral-600 font-semibold hover:underline">
             Create one
           </Link>
         </p>

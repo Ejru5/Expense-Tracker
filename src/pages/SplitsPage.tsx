@@ -237,7 +237,7 @@ export function SplitsPage() {
               <button
                 type="button"
                 onClick={handleAddFriendRow}
-                className="text-xs font-bold text-primary-500 hover:underline flex items-center gap-0.5"
+                className="text-xs font-bold text-coral hover:underline flex items-center gap-0.5"
               >
                 <Plus size={12} /> Add Person
               </button>

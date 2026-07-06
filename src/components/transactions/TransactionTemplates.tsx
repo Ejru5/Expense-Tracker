@@ -79,7 +79,7 @@ export function TransactionTemplates({ onSelect, currentFormState }: Transaction
             <button
               type="button"
               onClick={() => setShowSaveTpl(true)}
-              className="text-[10px] font-bold text-primary-500 hover:underline flex items-center gap-0.5"
+              className="text-[10px] font-bold text-coral hover:underline flex items-center gap-0.5"
             >
               <Plus size={10} /> Save these details as template
             </button>
