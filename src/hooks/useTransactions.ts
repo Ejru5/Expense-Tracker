@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   collection, query, orderBy, onSnapshot,
-  addDoc, updateDoc, deleteDoc, doc, serverTimestamp, where,
+  addDoc, updateDoc, deleteDoc, doc, serverTimestamp, Timestamp,
 } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 import { useAppStore } from '../store/useAppStore'
@@ -58,21 +58,23 @@ export function useTransactions(limit?: number) {
 
   async function addTransaction(tx: Omit<Transaction, 'id' | 'createdAt'>) {
     if (!household) return
-    addDoc(collection(db, `households/${household.id}/transactions`), {
+    await addDoc(collection(db, `households/${household.id}/transactions`), {
       ...tx,
-      date: tx.date,
+      date: tx.date instanceof Date
+        ? Timestamp.fromDate(tx.date)
+        : Timestamp.fromDate(new Date(tx.date as any)),
       createdAt: serverTimestamp(),
     })
   }
 
   async function updateTransaction(id: string, data: Partial<Transaction>) {
     if (!household) return
-    updateDoc(doc(db, `households/${household.id}/transactions`, id), data)
+    await updateDoc(doc(db, `households/${household.id}/transactions`, id), data)
   }
 
   async function deleteTransaction(id: string) {
     if (!household) return
-    deleteDoc(doc(db, `households/${household.id}/transactions`, id))
+    await deleteDoc(doc(db, `households/${household.id}/transactions`, id))
   }
 
   return { transactions, loading, addTransaction, updateTransaction, deleteTransaction }

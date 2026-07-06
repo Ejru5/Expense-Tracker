@@ -40,6 +40,7 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
   const [cardId, setCardId]     = useState(prefill?.cardId ?? defaultCard?.id ?? '')
   const [date, setDate]         = useState(prefill?.date ?? new Date().toISOString().split('T')[0])
   const [error, setError]       = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const [showKb, setShowKb]     = useState(false)
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 1024 : true)
 
@@ -95,21 +96,29 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
       if (!proceed) return
     }
 
-    addTransaction({
-      householdId: household.id,
-      amount: parseFloat(amount),
-      type,
-      categoryId,
-      merchant: merchant.trim() || undefined,
-      note: note.trim() || undefined,
-      paidBy: user.uid,
-      cardId: cardId || undefined,
-      date: new Date(date),
-      source: prefill?.source ?? 'manual',
-      receiptImageUrl: prefill?.receiptImageUrl,
-      receiptLineItems: prefill?.receiptLineItems,
-    })
-    onSuccess()
+    setIsSaving(true)
+    try {
+      await addTransaction({
+        householdId: household.id,
+        amount: parseFloat(amount),
+        type,
+        categoryId,
+        merchant: merchant.trim() || undefined,
+        note: note.trim() || undefined,
+        paidBy: user.uid,
+        cardId: cardId || undefined,
+        date: new Date(date),
+        source: prefill?.source ?? 'manual',
+        receiptImageUrl: prefill?.receiptImageUrl,
+        receiptLineItems: prefill?.receiptLineItems,
+      })
+      onSuccess()
+    } catch (err: any) {
+      console.error('Failed to save transaction:', err)
+      setError('Failed to save. Please check your connection and try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -231,6 +240,8 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
           fullWidth={!onCancel}
           className="flex-1"
           leftIcon={<Check size={16} />}
+          loading={isSaving}
+          disabled={isSaving}
         >
           Save Transaction
         </Button>

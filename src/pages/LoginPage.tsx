@@ -136,6 +136,10 @@ function friendlyError(code: string) {
       return 'Please enter a valid email address.'
     case 'auth/too-many-requests':
       return 'Too many attempts. Please try again later.'
+    case 'auth/unauthorized-domain':
+      return 'This domain is not authorized for sign-in. Please contact support.'
+    case 'auth/popup-closed-by-user':
+      return 'Sign-in cancelled. Please try again.'
     default:
       return 'Something went wrong. Please try again.'
   }
