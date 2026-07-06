@@ -69,7 +69,7 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
     if (tpl.cardId) setCardId(tpl.cardId)
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!amount || isNaN(Number(amount))) { setError('Enter a valid amount'); return }
     if (!categoryId) { setError('Select a category'); return }
