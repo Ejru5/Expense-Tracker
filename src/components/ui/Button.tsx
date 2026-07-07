@@ -21,7 +21,7 @@ const variantMap: Record<Variant, string> = {
 }
 
 const sizeMap: Record<Size, string> = {
-  sm: 'text-xs px-3 py-2 !rounded-lg',
+  sm: 'text-xs px-3 py-2 !rounded-sm',
   md: '',
   lg: 'text-base px-6 py-4',
 }

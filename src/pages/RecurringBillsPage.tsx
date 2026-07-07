@@ -73,7 +73,7 @@ export function RecurringBillsPage() {
         <button onClick={() => navigate(-1)} className="btn-ghost !p-2 !rounded-full">
           <ChevronLeft size={20} />
         </button>
-        <h1 className="text-2xl font-extrabold flex-1" style={{ color: '#360802' }}>Recurring Bills</h1>
+        <h1 className="text-2xl font-bold flex-1 text-nest-primary">Recurring Bills</h1>
         <Button leftIcon={<Plus size={16} />} size="sm" onClick={() => setShowAdd(true)}>
           Add
         </Button>
@@ -86,9 +86,9 @@ export function RecurringBillsPage() {
         </div>
       ) : bills.length === 0 ? (
         <div className="py-20 text-center flex flex-col items-center">
-          <Calendar size={48} className="text-slate-200 mb-4" />
-          <p className="font-semibold" style={{ color: '#a86157' }}>No recurring bills</p>
-          <p className="text-xs mt-1" style={{ color: '#c4877a' }}>Keep track of your rent, subscription, utilities...</p>
+          <Calendar size={48} className="text-nest-tertiary mb-4" />
+          <p className="font-bold text-nest-secondary">No recurring bills</p>
+          <p className="text-xs mt-1 text-nest-tertiary">Keep track of your rent, subscription, utilities...</p>
           <Button className="mt-4 animate-scale-in" onClick={() => setShowAdd(true)}>Add Bill</Button>
         </div>
       ) : (
@@ -96,7 +96,7 @@ export function RecurringBillsPage() {
           {/* Overdue */}
           {overdueBills.length > 0 && (
             <div>
-              <h3 className="section-title mb-3" style={{ color: '#fb2d54' }}>Overdue</h3>
+              <h3 className="section-title mb-3 text-expense">Overdue</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {overdueBills.map(bill => (
                   <BillCard key={bill.id} bill={bill} onPay={markAsPaid} onDelete={deleteBill} overdue />
@@ -121,72 +121,76 @@ export function RecurringBillsPage() {
 
       {/* Add Bill Modal */}
       <Modal open={showAdd} onClose={() => setShowAdd(false)} title="Add Recurring Bill">
-        <form onSubmit={handleAdd} className="space-y-4">
-          <Input
-            id="bill-name"
-            label="Bill Name"
-            placeholder="Netflix, Rent, Jio Fiber..."
-            value={form.name}
-            onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-            required
-          />
-          <Input
-            id="bill-amount"
-            label="Amount"
-            type="number"
-            placeholder="0"
-            value={form.amount}
-            onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-            leftElement={<span className="font-semibold text-slate-400">₹</span>}
-            required
-          />
-          <Select
-            id="bill-category"
-            label="Category"
-            value={form.categoryId}
-            onChange={e => setForm(f => ({ ...f, categoryId: e.target.value }))}
-            options={categories.map(c => ({ value: c.id, label: `${c.icon} ${c.name}` }))}
-          />
-          <Select
-            id="bill-frequency"
-            label="Frequency"
-            value={form.frequency}
-            onChange={e => setForm(f => ({ ...f, frequency: e.target.value as any }))}
-            options={frequencyOptions}
-          />
-          <Input
-            id="bill-next-due"
-            label="Next Due Date"
-            type="date"
-            value={form.nextDueDate}
-            onChange={e => setForm(f => ({ ...f, nextDueDate: e.target.value }))}
-            required
-          />
-          {cards.length > 0 && (
-            <Select
-              id="bill-card"
-              label="Pay with Card (optional)"
-              value={form.cardId}
-              onChange={e => setForm(f => ({ ...f, cardId: e.target.value }))}
-              options={cards.map(c => ({ value: c.id, label: c.label }))}
-              placeholder="Select account"
+        <form onSubmit={handleAdd} className="flex flex-col max-h-[70vh]">
+          <div className="space-y-4 overflow-y-auto pr-1 flex-1 pb-4 scrollbar-thin">
+            <Input
+              id="bill-name"
+              label="Bill Name"
+              placeholder="Netflix, Rent, Jio Fiber..."
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              required
             />
-          )}
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <input
-                id="bill-autolog"
-                type="checkbox"
-                checked={form.autoLog}
-                onChange={e => setForm(f => ({ ...f, autoLog: e.target.checked }))}
-                className="rounded"
+            <Input
+              id="bill-amount"
+              label="Amount"
+              type="number"
+              placeholder="0"
+              value={form.amount}
+              onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
+              leftElement={<span className="font-semibold text-slate-400">₹</span>}
+              required
+            />
+            <Select
+              id="bill-category"
+              label="Category"
+              value={form.categoryId}
+              onChange={e => setForm(f => ({ ...f, categoryId: e.target.value }))}
+              options={categories.map(c => ({ value: c.id, label: `${c.icon} ${c.name}` }))}
+            />
+            <Select
+              id="bill-frequency"
+              label="Frequency"
+              value={form.frequency}
+              onChange={e => setForm(f => ({ ...f, frequency: e.target.value as any }))}
+              options={frequencyOptions}
+            />
+            <Input
+              id="bill-next-due"
+              label="Next Due Date"
+              type="date"
+              value={form.nextDueDate}
+              onChange={e => setForm(f => ({ ...f, nextDueDate: e.target.value }))}
+              required
+            />
+            {cards.length > 0 && (
+              <Select
+                id="bill-card"
+                label="Pay with Card (optional)"
+                value={form.cardId}
+                onChange={e => setForm(f => ({ ...f, cardId: e.target.value }))}
+                options={cards.map(c => ({ value: c.id, label: c.label }))}
+                placeholder="Select account"
               />
-              <label htmlFor="bill-autolog" className="text-sm font-semibold text-slate-700">Auto-log on due date</label>
+            )}
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <input
+                  id="bill-autolog"
+                  type="checkbox"
+                  checked={form.autoLog}
+                  onChange={e => setForm(f => ({ ...f, autoLog: e.target.checked }))}
+                  className="rounded"
+                />
+                <label htmlFor="bill-autolog" className="text-sm font-semibold text-slate-700">Auto-log on due date</label>
+              </div>
             </div>
           </div>
 
-          <Button type="submit" fullWidth>Add Bill</Button>
+          <div className="pt-4 border-t border-nest-border flex-shrink-0">
+            <Button type="submit" fullWidth>Add Bill</Button>
+          </div>
         </form>
       </Modal>
     </div>
@@ -213,7 +217,7 @@ function BillCard({
 
   return (
     <div className={`card flex items-center justify-between gap-4 !py-3.5 !px-4 hover-lift transition-card ${
-      overdue ? 'border-rose-100 bg-rose-50/20' : ''
+      overdue ? 'border-[rgba(242,135,154,0.35)] bg-[rgba(242,135,154,0.06)]' : ''
     }`}>
       {/* Category icon */}
       <div

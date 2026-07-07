@@ -23,12 +23,12 @@ export function AppShell() {
   }, [])
 
   return (
-    <div className="min-h-dvh bg-white dark:bg-[var(--surface)]">
+    <div className="min-h-dvh bg-nest-bg text-nest-primary">
       {/* Offline banner */}
       {isOffline && (
         <div
           className="text-white text-xs font-semibold py-2 px-4 flex items-center justify-center gap-2 sticky top-0 z-50 animate-fade-in"
-          style={{ background: 'var(--color-coral-flame)', boxShadow: 'var(--shadow-fab)' }}
+          style={{ background: 'var(--nest-cat-dining)', boxShadow: 'var(--shadow-fab)' }}
         >
           <WifiOff size={14} />
           <span>You are currently offline. Changes will sync once connected.</span>

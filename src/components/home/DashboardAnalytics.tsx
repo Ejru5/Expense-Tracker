@@ -62,11 +62,24 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
     categorySpentMap[t.categoryId] = (categorySpentMap[t.categoryId] ?? 0) + t.amount
   })
 
+  const getFlatColor = (catId: string, defaultColor: string) => {
+    const specColors: Record<string, string> = {
+      'groceries': 'var(--nest-cat-groceries)',
+      'subscriptions': 'var(--nest-cat-subs)',
+      'dining': 'var(--nest-cat-dining)',
+      'transport': 'var(--nest-cat-transport)',
+      'shopping': 'var(--nest-cat-shopping)',
+      'bills': 'var(--nest-cat-bills)',
+    }
+    const key = Object.keys(specColors).find(k => catId.toLowerCase().includes(k))
+    return key ? specColors[key] : defaultColor
+  }
+
   const pieData = categories
     .map(cat => ({
       name: cat.name,
       value: categorySpentMap[cat.id] ?? 0,
-      color: cat.color,
+      color: getFlatColor(cat.id, cat.color),
       icon: cat.icon
     }))
     .filter(c => c.value > 0)
@@ -74,8 +87,8 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
 
   // 4. Income vs Expense Bar Chart
   const incomeVsExpenseData = [
-    { name: 'Income', amount: totalThisMonthIncome, fill: 'var(--color-mint-action)' },
-    { name: 'Expenses', amount: totalThisMonthExpense, fill: 'var(--color-magenta-spark)' }
+    { name: 'Income', amount: totalThisMonthIncome, fill: 'var(--income)' },
+    { name: 'Expenses', amount: totalThisMonthExpense, fill: 'var(--expense)' }
   ]
 
   // 5. MoM Spending Trend (Cumulative spend comparison)
@@ -110,8 +123,8 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
   if (!hasData) {
     return (
       <div className="card py-10 flex flex-col items-center justify-center text-center">
-        <p className="text-sm font-semibold text-slate-500">No analytical data available for this month</p>
-        <p className="text-xs text-slate-400 mt-1">Transactions logged this month will populate dashboard charts.</p>
+        <p className="text-sm font-semibold text-nest-secondary">No analytical data available for this month</p>
+        <p className="text-xs text-nest-tertiary mt-1">Transactions logged this month will populate dashboard charts.</p>
       </div>
     )
   }
@@ -119,10 +132,10 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
   return (
     <div className="space-y-3.5">
       <div className="flex justify-between items-center px-1">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <h3 className="section-title pl-0.5">
           Spending & Cash Flow Analytics
         </h3>
-        <span className="text-[10px] text-slate-400 font-semibold lg:hidden">
+        <span className="text-[10px] text-nest-tertiary font-semibold lg:hidden">
           Swipe to view charts ➔
         </span>
       </div>
@@ -132,18 +145,18 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
         
         {/* Chart 1: Monthly Daily Spending */}
         <div className="card min-w-[85vw] md:min-w-[45vw] lg:min-w-0 flex-shrink-0 snap-center space-y-4">
-          <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          <h4 className="text-[11px] font-bold uppercase tracking-widest text-nest-secondary">
             Daily Spending (This Month)
           </h4>
           <div className="h-[180px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dailySpendData}>
-                <XAxis dataKey="day" stroke="#94a3b8" fontSize={8} tickLine={false} axisLine={false} />
+                <XAxis dataKey="day" stroke="var(--nest-text-secondary)" fontSize={8} tickLine={false} axisLine={false} />
                 <Tooltip
                   formatter={(value) => [formatINR(Number(value)), 'Spent']}
-                  contentStyle={{ background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)', fontSize: '11px' }}
+                  contentStyle={{ background: 'var(--nest-surface)', borderRadius: '12px', border: '1px solid var(--nest-border)', fontSize: '11px', color: 'var(--nest-text-primary)' }}
                 />
-                <Bar dataKey="amount" fill="var(--color-coral-flame)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="amount" fill="var(--nest-cat-groceries)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -151,7 +164,7 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
 
         {/* Chart 2: Category Breakdown */}
         <div className="card min-w-[85vw] md:min-w-[45vw] lg:min-w-0 flex-shrink-0 snap-center space-y-4">
-          <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          <h4 className="text-[11px] font-bold uppercase tracking-widest text-nest-secondary">
             Category Breakdown
           </h4>
           <div className="h-[180px] flex items-center justify-center">
@@ -179,28 +192,28 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
                     iconType="circle"
                     iconSize={8}
                     wrapperStyle={{ fontSize: '10px', fontWeight: 'bold' }}
-                    formatter={(value) => <span className="text-slate-600 dark:text-slate-350">{value}</span>}
+                    formatter={(value) => <span className="text-nest-primary">{value}</span>}
                   />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
-              <p className="text-xs text-slate-400">No categories logged</p>
+              <p className="text-xs text-nest-tertiary">No categories logged</p>
             )}
           </div>
         </div>
 
         {/* Chart 3: Income vs Expense comparison */}
         <div className="card min-w-[85vw] md:min-w-[45vw] lg:min-w-0 flex-shrink-0 snap-center space-y-4">
-          <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          <h4 className="text-[11px] font-bold uppercase tracking-widest text-nest-secondary">
             Cash Flow (Income vs Expenses)
           </h4>
           <div className="h-[180px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={incomeVsExpenseData} barSize={40}>
-                <XAxis dataKey="name" stroke="#94a3b8" fontSize={9} tickLine={false} axisLine={false} />
+                <XAxis dataKey="name" stroke="var(--nest-text-secondary)" fontSize={9} tickLine={false} axisLine={false} />
                 <Tooltip
                   formatter={(value) => [formatINR(Number(value)), 'Total']}
-                  contentStyle={{ background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)', fontSize: '11px' }}
+                  contentStyle={{ background: 'var(--nest-surface)', borderRadius: '12px', border: '1px solid var(--nest-border)', fontSize: '11px', color: 'var(--nest-text-primary)' }}
                 />
                 <Bar dataKey="amount" radius={[8, 8, 0, 0]}>
                   {incomeVsExpenseData.map((entry, index) => (
@@ -214,7 +227,7 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
 
         {/* Chart 4: Cumulative Spending Trend MoM */}
         <div className="card min-w-[85vw] md:min-w-[45vw] lg:min-w-0 flex-shrink-0 snap-center space-y-4">
-          <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          <h4 className="text-[11px] font-bold uppercase tracking-widest text-nest-secondary">
             MoM Cumulative Trend
           </h4>
           <div className="h-[180px]">
@@ -222,20 +235,20 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
               <AreaChart data={momData}>
                 <defs>
                   <linearGradient id="currentMonthGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-coral-flame)" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="var(--color-coral-flame)" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="var(--nest-cat-groceries)" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="var(--nest-cat-groceries)" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="day" stroke="#94a3b8" fontSize={8} tickLine={false} axisLine={false} />
+                <XAxis dataKey="day" stroke="var(--nest-text-secondary)" fontSize={8} tickLine={false} axisLine={false} />
                 <Tooltip
                   formatter={(value) => [formatINR(Number(value))]}
-                  contentStyle={{ background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)', fontSize: '11px' }}
+                  contentStyle={{ background: 'var(--nest-surface)', borderRadius: '12px', border: '1px solid var(--nest-border)', fontSize: '11px', color: 'var(--nest-text-primary)' }}
                 />
                 {/* Last Month cumulative line */}
                 <Area
                   type="monotone"
                   dataKey="Last Month"
-                  stroke="#94a3b8"
+                  stroke="var(--nest-text-secondary)"
                   strokeWidth={1.5}
                   strokeDasharray="4 4"
                   fill="none"
@@ -244,7 +257,7 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
                 <Area
                   type="monotone"
                   dataKey="This Month"
-                  stroke="var(--color-coral-flame)"
+                  stroke="var(--nest-cat-groceries)"
                   strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#currentMonthGrad)"
@@ -258,4 +271,5 @@ export function DashboardAnalytics({ transactions }: DashboardAnalyticsProps) {
     </div>
   )
 }
+
 export default DashboardAnalytics

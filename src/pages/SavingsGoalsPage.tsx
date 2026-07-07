@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronLeft, Plus, Target, Trash2, ArrowUpRight, DollarSign } from 'lucide-react'
+import { ChevronLeft, Plus, Target, Trash2, ArrowUpRight } from 'lucide-react'
 import { useSavingsGoals } from '../hooks/useSavingsGoals'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { Modal } from '../components/ui/BottomSheet'
-import { Skeleton } from '../components/ui'
+import { Skeleton, DotProgress } from '../components/ui'
 import { formatINR, budgetPercent } from '../lib/utils'
 
 const iconsList = ['🎯', '🚗', '🏠', '✈️', '🎓', '💍', '💻', '💰']
@@ -57,7 +57,7 @@ export function SavingsGoalsPage() {
         <button onClick={() => navigate(-1)} className="btn-ghost !p-2 !rounded-full">
           <ChevronLeft size={20} />
         </button>
-        <h1 className="text-2xl font-extrabold flex-1" style={{ color: '#360802' }}>Savings Goals</h1>
+        <h1 className="text-2xl font-bold flex-1 text-nest-primary">Savings Goals</h1>
         <Button leftIcon={<Plus size={16} />} size="sm" onClick={() => setShowAdd(true)}>
           Add
         </Button>
@@ -69,9 +69,9 @@ export function SavingsGoalsPage() {
         </div>
       ) : goals.length === 0 ? (
         <div className="py-20 text-center flex flex-col items-center">
-          <Target size={48} className="text-slate-200 mb-4" />
-          <p className="font-semibold" style={{ color: '#a86157' }}>No savings goals</p>
-          <p className="text-xs mt-1" style={{ color: '#c4877a' }}>Start setting aside money for your future milestones</p>
+          <Target size={48} className="text-nest-tertiary mb-4" />
+          <p className="font-bold text-nest-secondary">No savings goals</p>
+          <p className="text-xs mt-1 text-nest-tertiary">Start setting aside money for your milestones</p>
           <Button className="mt-4" onClick={() => setShowAdd(true)}>Create Goal</Button>
         </div>
       ) : (
@@ -81,13 +81,13 @@ export function SavingsGoalsPage() {
             return (
               <div key={goal.id} className="card hover-lift transition-card">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="text-2xl w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
+                  <div className="text-2xl w-10 h-10 rounded-full bg-nest-surface-muted flex items-center justify-center flex-shrink-0 border border-nest-border">
                     {goal.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-sm truncate" style={{ color: '#360802' }}>{goal.name}</h4>
+                    <h4 className="font-bold text-sm truncate text-nest-primary">{goal.name}</h4>
                     {goal.targetDate && (
-                      <p className="text-[10px] text-slate-400">
+                      <p className="text-[10px] text-nest-secondary">
                         Target Date: {new Date(goal.targetDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     )}
@@ -110,20 +110,17 @@ export function SavingsGoalsPage() {
                 </div>
 
                 {/* Progress bar */}
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs">
                     <span className="text-slate-500">
-                      Saved: <span className="font-bold text-slate-800 dark:text-slate-100">{formatINR(goal.currentAmount)}</span>
+                      Saved: <span className="font-bold text-slate-800 dark:text-slate-100 rupee-amount">{formatINR(goal.currentAmount)}</span>
                     </span>
                     <span className="text-slate-400">Target: {formatINR(goal.targetAmount)}</span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-emerald-500 transition-all duration-700"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                  <p className="text-[10px] font-semibold text-emerald-600 mt-1">{pct}% achieved</p>
+                  <DotProgress value={pct} totalDots={15} variant={pct >= 100 ? 'healthy' : 'neutral'} />
+                  <p className={`text-[10px] font-semibold mt-1 ${pct >= 100 ? 'text-emerald-600' : 'text-nest-secondary'}`}>
+                    {pct.toFixed(0)}% achieved
+                  </p>
                 </div>
               </div>
             )
@@ -133,61 +130,65 @@ export function SavingsGoalsPage() {
 
       {/* Add Goal Modal */}
       <Modal open={showAdd} onClose={() => setShowAdd(false)} title="Create Savings Goal">
-        <form onSubmit={handleAdd} className="space-y-4">
-          <Input
-            id="goal-name"
-            label="Goal Name"
-            placeholder="Goa Trip, New Laptop, Car Downpayment..."
-            value={form.name}
-            onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-            required
-          />
-          <Input
-            id="goal-target"
-            label="Target Amount"
-            type="number"
-            placeholder="0"
-            value={form.targetAmount}
-            onChange={e => setForm(f => ({ ...f, targetAmount: e.target.value }))}
-            leftElement={<span className="font-semibold text-slate-400">₹</span>}
-            required
-          />
-          <Input
-            id="goal-current"
-            label="Starting Amount"
-            type="number"
-            placeholder="0"
-            value={form.currentAmount}
-            onChange={e => setForm(f => ({ ...f, currentAmount: e.target.value }))}
-            leftElement={<span className="font-semibold text-slate-400">₹</span>}
-          />
-          <Input
-            id="goal-date"
-            label="Target Date (optional)"
-            type="date"
-            value={form.targetDate}
-            onChange={e => setForm(f => ({ ...f, targetDate: e.target.value }))}
-          />
+        <form onSubmit={handleAdd} className="flex flex-col max-h-[70vh]">
+          <div className="space-y-4 overflow-y-auto pr-1 flex-1 pb-4 scrollbar-thin">
+            <Input
+              id="goal-name"
+              label="Goal Name"
+              placeholder="Goa Trip, New Laptop, Car Downpayment..."
+              value={form.name}
+              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+              required
+            />
+            <Input
+              id="goal-target"
+              label="Target Amount"
+              type="number"
+              placeholder="0"
+              value={form.targetAmount}
+              onChange={e => setForm(f => ({ ...f, targetAmount: e.target.value }))}
+              leftElement={<span className="font-semibold text-slate-400">₹</span>}
+              required
+            />
+            <Input
+              id="goal-current"
+              label="Starting Amount"
+              type="number"
+              placeholder="0"
+              value={form.currentAmount}
+              onChange={e => setForm(f => ({ ...f, currentAmount: e.target.value }))}
+              leftElement={<span className="font-semibold text-slate-400">₹</span>}
+            />
+            <Input
+              id="goal-date"
+              label="Target Date (optional)"
+              type="date"
+              value={form.targetDate}
+              onChange={e => setForm(f => ({ ...f, targetDate: e.target.value }))}
+            />
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Icon</label>
-            <div className="flex gap-2.5 flex-wrap">
-              {iconsList.map(icon => (
-                <button
-                  key={icon}
-                  type="button"
-                  onClick={() => setForm(f => ({ ...f, icon }))}
-                  className={`w-9 h-9 text-lg rounded-xl flex items-center justify-center bg-slate-50 hover:bg-slate-100 transition-all ${
-                    form.icon === icon ? 'ring-2 ring-coral scale-105 bg-coral-50' : ''
-                  }`}
-                >
-                  {icon}
-                </button>
-              ))}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Icon</label>
+              <div className="flex gap-2.5 flex-wrap">
+                {iconsList.map(icon => (
+                  <button
+                    key={icon}
+                    type="button"
+                    onClick={() => setForm(f => ({ ...f, icon }))}
+                    className={`w-9 h-9 text-lg rounded-xl flex items-center justify-center bg-slate-50 hover:bg-slate-100 transition-all ${
+                      form.icon === icon ? 'ring-2 ring-nest-cat-groceries scale-105 bg-nest-accent-lime/30' : ''
+                    }`}
+                  >
+                    {icon}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
-          <Button type="submit" fullWidth>Create Goal</Button>
+          <div className="pt-4 border-t border-nest-border flex-shrink-0">
+            <Button type="submit" fullWidth>Create Goal</Button>
+          </div>
         </form>
       </Modal>
 
@@ -212,3 +213,4 @@ export function SavingsGoalsPage() {
   )
 }
 export default SavingsGoalsPage
+

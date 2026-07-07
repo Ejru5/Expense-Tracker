@@ -43,13 +43,13 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-surface-subtle">
+    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-nest-bg text-nest-primary">
       <div className="w-full max-w-sm animate-slide-up">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <img src="/logo.png" alt="ExpenseTracker Logo" className="w-16 h-16 rounded-2xl shadow-fab object-cover mb-4" />
-          <h1 className="text-2xl font-extrabold text-slate-900">ExpenseTracker</h1>
-          <p className="text-sm text-slate-400 mt-1">Sign in to your household</p>
+          <img src="/logo.png" alt="Nest Logo" className="w-16 h-16 rounded-full border border-nest-border object-cover mb-4" />
+          <h1 className="text-2xl font-bold text-nest-primary">Nest</h1>
+          <p className="text-sm text-nest-secondary mt-1">Sign in to your household</p>
         </div>
 
         {/* Google Sign In */}
@@ -113,9 +113,9 @@ export function LoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-slate-400 mt-6">
+        <p className="text-center text-sm text-nest-secondary mt-6">
           Don't have an account?{' '}
-          <Link to="/register" className="text-coral-600 font-semibold hover:underline">
+          <Link to="/register" className="text-nest-accent-lime-text font-bold hover:underline">
             Create one
           </Link>
         </p>

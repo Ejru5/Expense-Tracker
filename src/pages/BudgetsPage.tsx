@@ -93,21 +93,16 @@ export function BudgetsPage() {
 
       {/* Overall monthly budget card */}
       <div
-        className="rounded-2xl p-5 text-white mb-6 relative overflow-hidden"
-        style={{
-          background: 'var(--gradient-coral-flame)',
-          boxShadow: '0 8px 24px rgba(0, 102, 204, 0.15)',
-          borderRadius: '16px',
-        }}
+        className="hero-card hero-card-healthy text-nest-accent-lime-text mb-6 flex flex-col justify-between"
       >
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-0.5">Overall Monthly Limit</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5 opacity-85">Overall Monthly Limit</p>
             <p className="text-3xl font-extrabold tracking-tight rupee-amount">
               {totalBudget > 0 ? formatINR(totalBudget) : 'Not set'}
             </p>
-            <p className="text-xs text-blue-100/80 font-semibold mt-1">
-              <span className="text-white font-extrabold">{formatINR(totalSpent)}</span> spent
+            <p className="text-xs font-semibold mt-1 opacity-90">
+              <span className="font-extrabold">{formatINR(totalSpent)}</span> spent
               {totalBudget > 0 && (
                 <>
                   <span className="mx-1.5 opacity-60">·</span>
@@ -132,7 +127,7 @@ export function BudgetsPage() {
               <input
                 type="number"
                 inputMode="numeric"
-                className="input-base pl-8 !py-2 !bg-white text-slate-900 !rounded-xl"
+                className="input-base pl-8 !py-2 !bg-white text-slate-900 !rounded-sm"
                 placeholder="Total monthly budget"
                 value={totalValue}
                 onChange={e => setTotalValue(e.target.value)}
@@ -143,7 +138,7 @@ export function BudgetsPage() {
             <button
               onClick={handleSaveTotal}
               disabled={savingTotal}
-              className="flex items-center gap-1.5 bg-white text-coral font-bold rounded-xl px-4 py-2 text-xs hover:bg-slate-50 transition-colors select-none active:scale-95"
+              className="flex items-center gap-1.5 bg-white text-nest-accent-lime-text font-bold rounded-sm px-4 py-2 text-xs hover:bg-slate-50 transition-colors select-none active:scale-95"
             >
               <Check size={14} />
               {savingTotal ? '...' : 'Save'}
@@ -156,16 +151,17 @@ export function BudgetsPage() {
           <div className="pt-1">
             <div className="w-full h-2.5 rounded-full bg-white/20 overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-700 ${
-                  pct >= 100 ? 'bg-rose-400' : pct >= 80 ? 'bg-amber-300' : 'bg-emerald-400'
-                }`}
-                style={{ width: `${Math.min(pct, 100)}%` }}
+                className="h-full rounded-full transition-all duration-700"
+                style={{ 
+                  width: `${Math.min(pct, 100)}%`,
+                  backgroundColor: pct >= 100 ? 'var(--nest-cat-shopping)' : pct >= 80 ? 'var(--nest-cat-dining)' : 'var(--nest-cat-groceries)'
+                }}
               />
             </div>
-            <div className="flex justify-between text-[10px] font-bold text-blue-100/90 mt-1.5">
+            <div className="flex justify-between text-[10px] font-bold text-nest-accent-lime-text/90 mt-1.5">
               <span>{pct.toFixed(0)}% of limit used</span>
               {pct >= 100 && (
-                <span className="text-rose-200">
+                <span className="text-red-950 font-extrabold">
                   Over by {formatINR(totalSpent - totalBudget)}
                 </span>
               )}

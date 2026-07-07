@@ -18,7 +18,7 @@ export function BottomSheet({ open, onClose, title, children }: BottomSheetProps
 
   return (
     <>
-      {/* Overlay — warm dark brandwood tint */}
+      {/* Overlay — dark translucent */}
       <div
         className="bottom-sheet-overlay"
         onClick={onClose}
@@ -34,7 +34,7 @@ export function BottomSheet({ open, onClose, title, children }: BottomSheetProps
         <div className="sheet-handle" />
         {title && (
           <div className="flex items-center justify-between px-5 pb-3">
-            <h2 className="text-base font-semibold" style={{ color: '#360802' }}>{title}</h2>
+            <h2 className="text-base font-semibold text-nest-primary">{title}</h2>
             <button
               onClick={onClose}
               className="btn-ghost !p-2 !rounded-full"
@@ -70,10 +70,10 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-md' }:
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Warm brandwood overlay */}
+      {/* Dark overlay */}
       <div
         className="absolute inset-0 backdrop-blur-sm"
-        style={{ background: 'rgba(54, 8, 2, 0.35)' }}
+        style={{ background: 'rgba(26, 26, 26, 0.35)' }}
         onClick={onClose}
       />
       <div
@@ -81,14 +81,14 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-md' }:
         aria-modal="true"
         className={`relative w-full ${maxWidth} max-h-[85vh] flex flex-col rounded-2xl p-6 animate-scale-in`}
         style={{
-          background: 'var(--surface)',
+          background: 'var(--nest-surface)',
           boxShadow: 'var(--shadow-modal)',
-          border: '1px solid var(--border)',
+          border: '1px solid var(--nest-border)',
         }}
       >
         {title && (
           <div className="flex items-center justify-between mb-4 flex-shrink-0">
-            <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>{title}</h2>
+            <h2 className="text-lg font-semibold text-nest-primary">{title}</h2>
             <button onClick={onClose} className="btn-ghost !p-2 !rounded-full"><X size={18} /></button>
           </div>
         )}

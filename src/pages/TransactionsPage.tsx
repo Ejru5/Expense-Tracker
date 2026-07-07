@@ -121,7 +121,7 @@ export function TransactionsPage() {
                 setIsCategoryOpen(!isCategoryOpen)
                 setIsTypeOpen(false)
               }}
-              className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium bg-surface dark:bg-surface-subtle border border-border-subtle rounded-xl hover:bg-surface-warm/50 transition-all min-h-[38px] focus:ring-1 focus:ring-coral/25 focus:border-coral select-none"
+              className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium bg-surface dark:bg-surface-subtle border border-border-subtle rounded-xl hover:bg-surface-warm/50 transition-all min-h-[38px] focus:ring-1 focus:ring-nest-cat-groceries/25 focus:border-nest-cat-groceries select-none"
             >
               <span className="flex items-center gap-2 truncate text-slate-700 dark:text-slate-200">
                 <span className="text-sm">{categoryOptions.find(o => o.value === selectedCategory)?.icon}</span>
@@ -146,14 +146,14 @@ export function TransactionsPage() {
                         }}
                         className={`w-full flex items-center justify-between px-3 py-2 text-[11px] font-semibold rounded-lg transition-colors text-left min-h-[34px]
                           ${isSelected 
-                            ? 'bg-coral-50/50 text-coral dark:bg-coral-950/20' 
+                            ? 'bg-nest-accent-lime/40 text-nest-accent-lime-text font-bold' 
                             : 'text-slate-700 dark:text-slate-350 hover:bg-surface-warm dark:hover:bg-slate-800/40'}`}
                       >
                         <span className="flex items-center gap-2">
                           <span>{opt.icon}</span>
                           <span>{opt.name}</span>
                         </span>
-                        {isSelected && <Check size={12} className="text-coral flex-shrink-0" />}
+                        {isSelected && <Check size={12} className="text-nest-accent-lime-text flex-shrink-0" />}
                       </button>
                     )
                   })}
@@ -170,7 +170,7 @@ export function TransactionsPage() {
                 setIsTypeOpen(!isTypeOpen)
                 setIsCategoryOpen(false)
               }}
-              className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium bg-surface dark:bg-surface-subtle border border-border-subtle rounded-xl hover:bg-surface-warm/50 transition-all min-h-[38px] focus:ring-1 focus:ring-coral/25 focus:border-coral select-none"
+              className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium bg-surface dark:bg-surface-subtle border border-border-subtle rounded-xl hover:bg-surface-warm/50 transition-all min-h-[38px] focus:ring-1 focus:ring-nest-cat-groceries/25 focus:border-nest-cat-groceries select-none"
             >
               <span className="flex items-center gap-2 truncate text-slate-700 dark:text-slate-200">
                 <span className="text-sm">{typeOptions.find(o => o.value === selectedType)?.icon}</span>
@@ -195,14 +195,14 @@ export function TransactionsPage() {
                         }}
                         className={`w-full flex items-center justify-between px-3 py-2 text-[11px] font-semibold rounded-lg transition-colors text-left min-h-[34px]
                           ${isSelected 
-                            ? 'bg-coral-50/50 text-coral dark:bg-coral-950/20' 
+                            ? 'bg-nest-accent-lime/40 text-nest-accent-lime-text font-bold' 
                             : 'text-slate-700 dark:text-slate-350 hover:bg-surface-warm dark:hover:bg-slate-800/40'}`}
                       >
                         <span className="flex items-center gap-2">
                           <span>{opt.icon}</span>
                           <span>{opt.name}</span>
                         </span>
-                        {isSelected && <Check size={12} className="text-coral flex-shrink-0" />}
+                        {isSelected && <Check size={12} className="text-nest-accent-lime-text flex-shrink-0" />}
                       </button>
                     )
                   })}

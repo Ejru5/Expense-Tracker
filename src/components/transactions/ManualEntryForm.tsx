@@ -121,8 +121,8 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
         currentFormState={{ amount, categoryId, merchant, note, cardId }}
       />
 
-      {/* Type Toggle — Jeton functional color vocabulary */}
-      <div className="flex overflow-hidden" style={{ borderRadius: '16px', border: '1.5px solid #f3c5bb' }}>
+      {/* Type Toggle — Nest style */}
+      <div className="flex overflow-hidden" style={{ borderRadius: '12px', border: '1.5px solid var(--nest-border)' }}>
         {(['expense', 'income'] as const).map(t => (
           <button
             key={t}
@@ -132,9 +132,9 @@ export function ManualEntryForm({ onSuccess, onCancel, prefill }: ManualEntryFor
             style={
               type === t
                 ? t === 'expense'
-                  ? { background: '#fb2d54', color: '#ffffff' }  // Magenta Spark — expense
-                  : { background: '#34c771', color: '#ffffff' }  // Mint Action — income
-                : { background: '#fef5f3', color: '#a86157' }
+                  ? { background: 'var(--nest-cat-shopping)', color: '#ffffff' }  // Soft Rose
+                  : { background: 'var(--nest-cat-groceries)', color: 'var(--nest-accent-lime-text)' }  // Soft Lime Green
+                : { background: 'var(--nest-surface-muted)', color: 'var(--nest-text-secondary)' }
             }
           >
             {t}

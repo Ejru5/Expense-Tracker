@@ -49,12 +49,12 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-surface-subtle">
+    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-nest-bg text-nest-primary">
       <div className="w-full max-w-sm animate-slide-up">
         <div className="flex flex-col items-center mb-8">
-          <img src="/logo.png" alt="ExpenseTracker Logo" className="w-16 h-16 rounded-2xl shadow-fab object-cover mb-4" />
-          <h1 className="text-2xl font-extrabold text-slate-900">Create Account</h1>
-          <p className="text-sm text-slate-400 mt-1">Start tracking your household expenses</p>
+          <img src="/logo.png" alt="Nest Logo" className="w-16 h-16 rounded-full border border-nest-border object-cover mb-4" />
+          <h1 className="text-2xl font-bold text-nest-primary">Create Account</h1>
+          <p className="text-sm text-nest-secondary mt-1">Start tracking your household expenses</p>
         </div>
 
         <button
@@ -126,9 +126,9 @@ export function RegisterPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-slate-400 mt-6">
+        <p className="text-center text-sm text-nest-secondary mt-6">
           Already have an account?{' '}
-          <Link to="/login" className="text-coral-600 font-semibold hover:underline">
+          <Link to="/login" className="text-nest-accent-lime-text font-bold hover:underline">
             Sign in
           </Link>
         </p>

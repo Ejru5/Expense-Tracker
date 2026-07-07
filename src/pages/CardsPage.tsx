@@ -53,7 +53,7 @@ export function CardsPage() {
   return (
     <div className="page-content px-4 lg:px-8 pt-6 animate-fade-in max-w-2xl lg:max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-extrabold" style={{ color: '#360802' }}>Cards & Accounts</h1>
+        <h1 className="text-2xl font-bold text-nest-primary">Cards & Accounts</h1>
         <Button leftIcon={<Plus size={16} />} size="sm" onClick={() => setShowAdd(true)} id="add-card-btn">
           Add
         </Button>

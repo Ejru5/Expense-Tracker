@@ -114,8 +114,8 @@ export function TransactionDetailPage() {
 function Row({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between px-5 py-3.5">
-      <span className="text-sm font-medium" style={{ color: '#a86157' }}>{label}</span>
-      <span className="text-sm font-semibold flex items-center gap-1.5" style={{ color: '#360802' }}>
+      <span className="text-sm font-medium text-nest-secondary">{label}</span>
+      <span className="text-sm font-bold flex items-center gap-1.5 text-nest-primary">
         {icon}{value}
       </span>
     </div>

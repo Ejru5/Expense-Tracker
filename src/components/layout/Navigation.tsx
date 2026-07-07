@@ -2,19 +2,20 @@ import React, { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, History, Target, Menu, Calendar,
-  PiggyBank, CreditCard, Users, UserCircle, Plus, X, ChevronRight,
+  PiggyBank, CreditCard, Users, UserCircle, Plus, X, ChevronRight, BarChart3
 } from 'lucide-react'
 import { useAppStore } from '../../store/useAppStore'
 
 /* ── Desktop Sidebar Tabs ────────────────────────────────────────── */
 const sidebarTabs = [
-  { path: '/',          icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/transactions', icon: History,      label: 'Transactions' },
-  { path: '/budgets',   icon: Target,          label: 'Budgets'   },
-  { path: '/recurring', icon: Calendar,        label: 'Bills'     },
-  { path: '/savings',   icon: PiggyBank,       label: 'Savings'   },
-  { path: '/cards',     icon: CreditCard,      label: 'Accounts'  },
-  { path: '/profile',   icon: UserCircle,      label: 'Profile'   },
+  { path: '/',             icon: LayoutDashboard, label: 'Overview' },
+  { path: '/transactions', icon: History,         label: 'Spending' },
+  { path: '/budgets',      icon: Target,          label: 'Budgets' },
+  { path: '/recurring',    icon: Calendar,        label: 'Subs' },
+  { path: '/savings',      icon: PiggyBank,       label: 'Goals' },
+  { path: '/reports',      icon: BarChart3,       label: 'Reports' },
+  { path: '/splits',       icon: Users,           label: 'Splits' },
+  { path: '/profile',      icon: UserCircle,      label: 'Profile' },
 ]
 
 interface SidebarProps {
@@ -22,22 +23,31 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onAddPress }: SidebarProps) {
+  const { user } = useAppStore()
+  const displayName = user?.displayName ? user.displayName.split(' ')[0] : 'Dhruv'
+  const partnerName = displayName === 'Dhruv' ? 'Dhruvi' : 'Dhruv'
+
   return (
     <aside
       className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 z-30 pt-8"
       style={{
         width: 'var(--sidebar-w)',
-        background: 'var(--surface)',
-        borderRight: '1px solid var(--border)',
+        background: 'var(--nest-surface)',
+        borderRight: '1px solid var(--nest-border)',
       }}
     >
-      {/* Logo */}
+      {/* Logo / Profile info */}
       <div className="px-6 mb-8">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="ExpenseTracker Logo" className="w-10 h-10 rounded-xl object-cover" />
+          <div className="relative flex-shrink-0">
+            <img src="/logo.png" alt="Nest Logo" className="w-9 h-9 rounded-full object-cover border border-nest-border" />
+            <span className="absolute -bottom-1 -right-1 w-4.5 h-4.5 bg-nest-accent-lime rounded-full border border-white flex items-center justify-center text-[8px] font-bold text-nest-accent-lime-text">2</span>
+          </div>
           <div>
-            <p className="font-bold text-sm leading-tight text-slate-900 dark:text-slate-100" style={{ letterSpacing: '-0.01em' }}>ExpenseTracker</p>
-            <p className="text-xs text-slate-400">Household Manager</p>
+            <p className="font-bold text-sm leading-tight text-nest-primary">Nest</p>
+            <p className="text-[10px] text-nest-secondary font-bold uppercase tracking-wider">
+              {displayName} & {partnerName}
+            </p>
           </div>
         </div>
       </div>
@@ -55,36 +65,40 @@ export function Sidebar({ onAddPress }: SidebarProps) {
       </div>
 
       {/* Nav Links */}
-      <nav className="flex-1 px-3 space-y-1 pt-2">
+      <nav className="flex-1 px-3 space-y-1 pt-2 overflow-y-auto">
         {sidebarTabs.map(tab => (
           <NavLink
             key={tab.path}
             to={tab.path}
             end={tab.path === '/'}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 border border-transparent
-               ${isActive
-                 ? 'bg-slate-100/80 text-slate-900 dark:bg-slate-800/80 dark:text-white font-semibold'
-                 : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/40 dark:hover:bg-slate-800/40'}`
+              `nav-item ${isActive ? 'active' : ''}`
             }
           >
             {({ isActive }) => (
               <>
-                <tab.icon
-                  size={18}
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={isActive ? 'text-coral' : 'text-slate-400'}
-                />
-                {tab.label}
+                <div className="icon-badge">
+                  <tab.icon
+                    size={14}
+                    strokeWidth={isActive ? 2 : 1.5}
+                    className={isActive ? 'text-nest-primary' : 'text-nest-secondary'}
+                  />
+                </div>
+                <span className="text-sm font-semibold">{tab.label}</span>
               </>
             )}
           </NavLink>
         ))}
       </nav>
 
-      {/* Version */}
-      <div className="px-6 py-4 border-t border-border-subtle">
-        <p className="text-xs text-slate-400">ExpenseTracker v1.1</p>
+      {/* Promo & Version */}
+      <div className="px-4 py-4 border-t border-nest-border flex flex-col gap-2.5">
+        <div className="bg-nest-surface-muted p-3.5 rounded-lg border border-nest-border flex flex-col gap-1.5 text-xs">
+          <p className="font-bold text-nest-primary">Invite Partner</p>
+          <p className="text-[10px] text-nest-secondary">Unlock biometric syncing & real-time notifications.</p>
+          <button className="nest-pill text-center justify-center mt-1 py-1 text-[9px] w-full font-bold">Invite Now</button>
+        </div>
+        <p className="text-[10px] text-nest-tertiary font-bold tracking-widest uppercase pl-2">Nest v1.1</p>
       </div>
     </aside>
   )
@@ -101,16 +115,16 @@ export function BottomNav({ onAddPress }: BottomNavProps) {
 
   // Primary tabs to display directly in the bottom navigation bar
   const mainTabs = [
-    { path: '/',          icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/transactions', icon: History,      label: 'Transactions' },
-    { path: '/budgets',   icon: Target,          label: 'Budgets'   },
+    { path: '/',             icon: LayoutDashboard, label: 'Overview' },
+    { path: '/transactions', icon: History,         label: 'Spending' },
+    { path: '/budgets',      icon: Target,          label: 'Budgets' },
   ]
 
   // Secondary items in the "More" menu
   const secondaryTabs = [
-    { path: '/recurring', icon: Calendar,        label: 'Bills' },
-    { path: '/savings',   icon: PiggyBank,       label: 'Savings' },
-    { path: '/cards',     icon: CreditCard,      label: 'Accounts' },
+    { path: '/recurring', icon: Calendar,        label: 'Subs' },
+    { path: '/savings',   icon: PiggyBank,       label: 'Goals' },
+    { path: '/reports',   icon: BarChart3,       label: 'Reports' },
     { path: '/splits',    icon: Users,           label: 'Splits' },
     { path: '/profile',   icon: UserCircle,      label: 'Profile' },
   ]
@@ -129,19 +143,19 @@ export function BottomNav({ onAddPress }: BottomNavProps) {
         id="add-transaction-fab"
         onClick={onAddPress}
         aria-label="Add transaction"
-        className="fixed bottom-20 right-4 z-45 lg:hidden flex items-center justify-center w-12.5 h-12.5 rounded-full text-white shadow-fab active:scale-95 transition-all duration-150"
+        className="fixed bottom-20 right-4 z-40 lg:hidden flex items-center justify-center rounded-full text-nest-accent-lime-text shadow-fab active:scale-95 transition-all duration-150 border border-nest-border/10"
         style={{
           width: '50px',
           height: '50px',
-          background: 'var(--gradient-coral-flame)',
+          background: 'var(--nest-accent-lime)',
         }}
       >
-        <Plus size={24} strokeWidth={2.5} color="#ffffff" />
+        <Plus size={24} strokeWidth={2.5} />
       </button>
 
       {/* Sticky Bottom Navigation Bar */}
       <div 
-        className="fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-border-subtle shadow-lg lg:hidden"
+        className="fixed bottom-0 left-0 right-0 z-30 bg-nest-surface border-t border-nest-border shadow-card lg:hidden"
         style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}
       >
         <nav className="flex h-16 items-center justify-around px-2">
@@ -152,9 +166,11 @@ export function BottomNav({ onAddPress }: BottomNavProps) {
                 key={tab.path}
                 to={tab.path}
                 className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 rounded-xl transition-all duration-150 min-h-[48px]
-                  ${isActive ? 'text-coral' : 'text-slate-500 hover:text-coral'}`}
+                  ${isActive ? 'text-nest-accent-lime-text' : 'text-nest-secondary'}`}
               >
-                <tab.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                <div className={`p-1 rounded-full ${isActive ? 'bg-nest-accent-lime/40' : ''}`}>
+                  <tab.icon size={20} strokeWidth={isActive ? 2 : 1.5} />
+                </div>
                 <span className="text-[10px] font-bold tracking-wide">{tab.label}</span>
               </NavLink>
             )
@@ -164,9 +180,11 @@ export function BottomNav({ onAddPress }: BottomNavProps) {
           <button
             onClick={handleMoreClick}
             className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 rounded-xl transition-all duration-150 min-h-[48px]
-              ${isSecondaryActive || moreOpen ? 'text-coral' : 'text-slate-500 hover:text-coral'}`}
+              ${isSecondaryActive || moreOpen ? 'text-nest-accent-lime-text' : 'text-nest-secondary'}`}
           >
-            <Menu size={20} strokeWidth={isSecondaryActive || moreOpen ? 2.5 : 2} />
+            <div className={`p-1 rounded-full ${isSecondaryActive || moreOpen ? 'bg-nest-accent-lime/40' : ''}`}>
+              <Menu size={20} strokeWidth={isSecondaryActive || moreOpen ? 2 : 1.5} />
+            </div>
             <span className="text-[10px] font-bold tracking-wide">More</span>
           </button>
         </nav>
@@ -177,18 +195,18 @@ export function BottomNav({ onAddPress }: BottomNavProps) {
         <div className="fixed inset-0 z-50 lg:hidden animate-fade-in">
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" 
+            className="absolute inset-0 bg-neutral-900/30 backdrop-blur-sm" 
             onClick={() => setMoreOpen(false)}
           />
 
           {/* Sheet Container */}
-          <div className="absolute bottom-0 left-0 right-0 bg-surface rounded-t-3xl border-t border-border shadow-2xl p-6 pb-8 animate-slide-up max-h-[85vh] overflow-y-auto">
+          <div className="absolute bottom-0 left-0 right-0 bg-nest-surface rounded-t-3xl border-t border-nest-border shadow-modal p-6 pb-8 animate-slide-up max-h-[85vh] overflow-y-auto">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-base font-extrabold text-slate-900 dark:text-slate-100">Explore App</h2>
+              <h2 className="text-base font-bold text-nest-primary uppercase tracking-wider">Explore App</h2>
               <button 
                 onClick={() => setMoreOpen(false)}
-                className="p-2.5 rounded-full bg-surface-warm text-slate-550 active:bg-slate-100 dark:active:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-2 rounded-full bg-nest-surface-muted text-nest-secondary active:bg-nest-border min-w-[44px] min-h-[44px] flex items-center justify-center"
               >
                 <X size={18} />
               </button>
@@ -203,16 +221,18 @@ export function BottomNav({ onAddPress }: BottomNavProps) {
                     key={tab.path}
                     to={tab.path}
                     onClick={() => setMoreOpen(false)}
-                    className={`flex items-center justify-between p-4 rounded-2xl border transition-all min-h-[52px]
+                    className={`flex items-center justify-between p-4 rounded-xl border transition-all min-h-[52px]
                       ${isActive 
-                        ? 'bg-surface-warm text-coral border-border-subtle font-extrabold' 
-                        : 'bg-surface border-border-subtle text-slate-700 dark:text-slate-300 hover:bg-surface-warm font-semibold'}`}
+                        ? 'bg-nest-surface-muted text-nest-primary border-nest-border font-bold' 
+                        : 'bg-nest-surface border-nest-border text-nest-secondary hover:bg-nest-surface-muted font-semibold'}`}
                   >
                     <div className="flex items-center gap-3">
-                      <tab.icon size={20} className={isActive ? 'text-coral' : 'text-slate-500'} />
+                      <div className="icon-badge">
+                        <tab.icon size={18} className={isActive ? 'text-nest-primary' : 'text-nest-secondary'} />
+                      </div>
                       <span className="text-sm">{tab.label}</span>
                     </div>
-                    <ChevronRight size={16} className={isActive ? 'text-coral' : 'text-slate-400'} />
+                    <ChevronRight size={16} className={isActive ? 'text-nest-primary' : 'text-nest-secondary'} />
                   </NavLink>
                 )
               })}
