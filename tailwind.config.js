@@ -33,8 +33,26 @@ export default {
           lime: {
             DEFAULT: 'var(--nest-accent-lime)',
             text: 'var(--nest-accent-lime-text)',
-          }
+          },
+          'accent-lime': 'var(--nest-accent-lime)',
+          'accent-lime-text': 'var(--nest-accent-lime-text)',
+          'cat-groceries': 'var(--nest-cat-groceries)',
+          'cat-subs': 'var(--nest-cat-subs)',
+          'cat-dining': 'var(--nest-cat-dining)',
+          'cat-transport': 'var(--nest-cat-transport)',
+          'cat-shopping': 'var(--nest-cat-shopping)',
+          'cat-bills': 'var(--nest-cat-bills)',
         },
+
+        // Common layout background/border names mapping
+        surface: {
+          DEFAULT: 'var(--nest-surface)',
+          warm: 'var(--nest-surface-muted)',
+          subtle: 'var(--nest-surface-muted)',
+          muted: 'var(--nest-surface-muted)',
+        },
+        border: 'var(--nest-border)',
+        'border-subtle': 'var(--nest-border)',
 
         // Semantic and Interactive colors
         income: 'var(--income)',

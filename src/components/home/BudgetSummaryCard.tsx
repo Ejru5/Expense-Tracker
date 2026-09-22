@@ -53,7 +53,7 @@ export function BudgetSummaryCard() {
         </button>
       </div>
 
-      {totalBudget === 0 && budgetedCats.length === 0 ? (
+      {totalBudget === 0 ? (
         /* Empty State */
         <div className="py-6 text-center space-y-4">
           <div className="w-14 h-14 rounded-full bg-nest-surface-muted border border-dashed border-nest-border flex items-center justify-center mx-auto">

@@ -5,7 +5,7 @@ import { useHousehold } from '../hooks/useHousehold'
 import { useTransactions } from '../hooks/useTransactions'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
-import { Copy, LogOut, Users, Home, Moon, Sun, Key, Download, Plus, Trash2, Check } from 'lucide-react'
+import { Copy, LogOut, Users, Home, Moon, Sun, Key, Download, Plus, Trash2, Check, DoorOpen, AlertTriangle } from 'lucide-react'
 import { exportToCSV } from '../lib/export'
 import { DEFAULT_CATEGORIES, type Category } from '../types'
 import { Modal } from '../components/ui/BottomSheet'
@@ -13,11 +13,15 @@ import { Modal } from '../components/ui/BottomSheet'
 export function ProfilePage() {
   const { user, logout } = useAuth()
   const { household, darkMode, toggleDarkMode, categories, setCategories } = useAppStore()
+  const { leaveHousehold } = useHousehold()
   const { transactions } = useTransactions()
 
   const [copied, setCopied] = useState(false)
   const [apiKey, setApiKey] = useState(localStorage.getItem('mistral_api_key') || '')
   const [keySaved, setKeySaved] = useState(false)
+  const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const [leaving, setLeaving] = useState(false)
+  const [leaveError, setLeaveError] = useState<string | null>(null)
   
   // Custom Category State
   const [showAddCat, setShowAddCat] = useState(false)
@@ -29,6 +33,19 @@ export function ProfilePage() {
     navigator.clipboard.writeText(household.inviteCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  async function handleLeaveHousehold() {
+    setLeaving(true)
+    setLeaveError(null)
+    try {
+      await leaveHousehold()
+      setShowLeaveModal(false)
+    } catch (err: any) {
+      setLeaveError(err.message ?? 'Something went wrong')
+    } finally {
+      setLeaving(false)
+    }
   }
 
   function handleSaveKey(e: React.FormEvent) {
@@ -198,9 +215,23 @@ export function ProfilePage() {
                     onClick={copyCode}
                     className="btn-secondary !py-2 !px-3 flex items-center gap-1.5 text-xs font-bold"
                   >
-                    {copied ? 'Copied!' : 'Copy'}
+                    {copied ? <><Check size={12} /> Copied</> : <><Copy size={12} /> Copy</>}
                   </button>
                 </div>
+              </div>
+
+              {/* Leave Household */}
+              <div className="pt-2 border-t border-nest-border">
+                <button
+                  onClick={() => setShowLeaveModal(true)}
+                  className="flex items-center gap-2 text-xs font-bold text-rose-500 hover:text-rose-600 transition-colors min-h-[36px]"
+                >
+                  <DoorOpen size={14} />
+                  Leave this Household
+                </button>
+                <p className="text-[10px] text-nest-tertiary mt-1 leading-relaxed">
+                  You'll be able to create or join a different household after leaving.
+                </p>
               </div>
             </div>
           )}
@@ -286,6 +317,47 @@ export function ProfilePage() {
           />
           <Button type="submit" fullWidth leftIcon={<Check size={16} />}>Add Category</Button>
         </form>
+      </Modal>
+
+      {/* Leave Household Confirmation Modal */}
+      <Modal open={showLeaveModal} onClose={() => { if (!leaving) { setShowLeaveModal(false); setLeaveError(null) } }} title="Leave Household?">
+        <div className="space-y-4 py-2">
+          <div className="flex gap-3 items-start p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900">
+            <AlertTriangle size={16} className="text-rose-500 flex-shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm font-bold text-rose-700 dark:text-rose-400">
+                You will be removed from <span className="italic">{household?.name}</span>
+              </p>
+              <p className="text-xs text-rose-600/80 dark:text-rose-400/70 leading-relaxed">
+                Your transaction history stays linked to this household. If you're the last member, the household will be deleted. You can create or join a new one after leaving.
+              </p>
+            </div>
+          </div>
+
+          {leaveError && (
+            <p className="text-xs font-semibold text-rose-500">{leaveError}</p>
+          )}
+
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => { setShowLeaveModal(false); setLeaveError(null) }}
+              disabled={leaving}
+            >
+              Cancel
+            </Button>
+            <Button
+              fullWidth
+              loading={leaving}
+              onClick={handleLeaveHousehold}
+              className="!bg-rose-500 hover:!bg-rose-600 !border-rose-500"
+              leftIcon={<DoorOpen size={15} />}
+            >
+              Leave Household
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   )

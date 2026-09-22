@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   doc, getDoc, setDoc, updateDoc, onSnapshot,
   collection, query, where, getDocs,
-  serverTimestamp,
+  serverTimestamp, deleteDoc, deleteField,
 } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 import { useAppStore } from '../store/useAppStore'
@@ -83,5 +83,32 @@ export function useHousehold() {
     })
   }
 
-  return { household, loading, error, createHousehold, joinHousehold }
+  /** Leave the current household.
+   *  - Removes this user from members + memberNames.
+   *  - If they were the only member, deletes the household document entirely.
+   */
+  async function leaveHousehold() {
+    if (!user || !household) throw new Error('Not in a household')
+    const ref = doc(db, 'households', household.id)
+    const snap = await getDoc(ref)
+    if (!snap.exists()) throw new Error('Household not found')
+    const data = snap.data()
+
+    const remainingMembers: string[] = (data.members as string[]).filter((uid: string) => uid !== user.uid)
+
+    if (remainingMembers.length === 0) {
+      // Last member — delete the whole document
+      await deleteDoc(ref)
+    } else {
+      // Remove just this user
+      await updateDoc(ref, {
+        members: remainingMembers,
+        [`memberNames.${user.uid}`]: deleteField(),
+      })
+    }
+
+    setHousehold(null)
+  }
+
+  return { household, loading, error, createHousehold, joinHousehold, leaveHousehold }
 }
